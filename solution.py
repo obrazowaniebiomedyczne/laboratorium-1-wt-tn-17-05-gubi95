@@ -2,7 +2,7 @@
 Rozwiązania do laboratorium 1 z Obrazowania Biomedycznego.
 """
 import numpy as np
-from obpng import write_png
+from obpng import write_png, read_png
 
 """
 3 - Kwadrat
@@ -72,7 +72,22 @@ checkerboard(256)
 4 - Interpolacja najbliższych sąsiadów.
 """
 def nn_interpolation(source, new_size):
-    pass
+    src = source.shape
+    dst = new_size
+    y_src, x_src = src
+    x_dst, y_dst = dst
+    r_x = x_src / x_dst
+    r_y = y_src / y_dst
+    image = np.zeros(new_size).astype(np.uint8)
+    for (iy, ix) in np.ndindex(image.shape):
+        image[iy, ix] = source[int(iy*r_y), int(ix*r_x)]
+
+    return image
+
+lennaImage = np.squeeze(read_png('data/mono/lenna.png'))
+lennaImage = nn_interpolation(lennaImage, (100, 100))
+lennaImage = nn_interpolation(lennaImage, (512, 512))
+write_png(lennaImage, 'results/4_nn.png')
 
 """
 5 - Interpolacja dwuliniowa
