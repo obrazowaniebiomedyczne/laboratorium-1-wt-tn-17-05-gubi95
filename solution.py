@@ -52,8 +52,21 @@ midcircle((256,512))
 """
 3 - Szachownica.
 """
-def checkerboard(size):
-    pass
+def checkerboard(size):    
+    cell = int(size / 8)
+    mainSquare = (size, size)
+    image = np.zeros(mainSquare).astype(np.uint8)
+    image.fill(128)
+    
+    for x in range(0, 8):
+        for y in range (0, 8):
+            if ((x + y) % 2) == 0:
+                image[x*cell:(x+1)*cell,y*cell:(y+1)*cell] = 64
+                
+    write_png(image, 'results/3_checkerboard.png')
+            
+
+checkerboard(256)
 
 """
 4 - Interpolacja najbliższych sąsiadów.
